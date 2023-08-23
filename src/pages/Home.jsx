@@ -12,7 +12,8 @@ import Alert from "@mui/joy/Alert";
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import { columnBo, columnsStatic } from "../components/Columns";
+import { columnBo } from "../components/Columns";
+import TabOne from "../components/HomeTabs/TabOne";
 
 export default function Home() {
   const [code, setCode] = React.useState("");
@@ -389,123 +390,21 @@ export default function Home() {
         <h1 style={{ lineHeight: 0 }}>MAVEKO</h1>
       </TabList>
 
-      <TabPanel value={1}>
-        <Input
-          sx={{ "--Input-decoratorChildHeight": "55px", width: "650px" }}
-          placeholder="PO LOGIN CODE"
-          type="text"
-          required
-          value={code}
-          onChange={(e) => {
-            setCode(e.target.value);
-            e.target.value.length >= 5 ? setDisabled(false) : setDisabled(true);
-          }}
-          endDecorator={
-            <Button
-              disabled={disabled}
-              onClick={() => {
-                setLoading(true);
-                setTimeout(async () => {
-                  await fetchSOItems(code);
-                }, 50);
-              }}
-              size="sm"
-              variant="solid"
-              color="primary"
-              loading={loading}
-              sx={{
-                background: "#04184B",
-                borderTopLeftRadius: 0,
-                borderBottomLeftRadius: 0,
-                paddingInline: "50px",
-              }}
-            >
-              FETCH
-            </Button>
-          }
-        />
-        <h2 style={{ display: visible, lineHeight: 0, marginTop: "40px" }}>
-          {headers.PONumber}
-        </h2>
-        <Divider style={{ display: visible, marginTop: "25px" }}></Divider>
-        <DataGrid
-          sx={{
-            "& .MuiDataGrid-columnHeaders": {
-              backgroundColor: "#04184B",
-              color: "white",
-              cursor: "pointer",
-              stroke: "white",
-            },
-          }}
-          style={{
-            display: visible,
-            marginTop: "20px",
-            width: "100%",
-          }}
-          rows={rows}
-          columns={columnsStatic}
-          initialState={{
-            pagination: {
-              paginationModel: {
-                pageSize: 5,
-              },
-            },
-          }}
-          pageSizeOptions={[5]}
-        />
-
-        <div
-          className="actions"
-          style={{
-            display: visible == "block" ? "flex" : "none",
-            justifyContent: "flex-end",
-            marginTop: "20px",
-          }}
-        >
-          <Button
-            onClick={() => {}}
-            disabled={loading}
-            style={{
-              padding: "15px",
-              paddingInline: "30px",
-              marginLeft: "20px",
-            }}
-            variant="outlined"
-            color="danger"
-          >
-            CANCEL
-          </Button>
-          <Button
-            disabled={loading}
-            onClick={() => {
-              setOpenForm(true);
-            }}
-            style={{
-              padding: "15px",
-              paddingInline: "30px",
-              marginLeft: "20px",
-            }}
-            color="warning"
-          >
-            INPUT ORDER DETAILS
-          </Button>
-          <Button
-            disabled={loading}
-            onClick={() => {
-              createOrder();
-              setOpened(true);
-            }}
-            style={{
-              padding: "15px",
-              paddingInline: "30px",
-              marginLeft: "20px",
-            }}
-            color="success"
-          >
-            SAVE ORDER
-          </Button>
-        </div>
-      </TabPanel>
+      <TabOne
+        code={code}
+        setCode={setCode}
+        setDisabled={setDisabled}
+        disabled={disabled}
+        setLoading={setLoading}
+        fetchSOItems={fetchSOItems}
+        loading={loading}
+        visible={visible}
+        headers={headers}
+        rows={rows}
+        setOpenForm={setOpenForm}
+        createOrder={createOrder}
+        setOpened={setOpened}
+      />
       <TabPanel value={2}>
         <Dialog
           open={open}
